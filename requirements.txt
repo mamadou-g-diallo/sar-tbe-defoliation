@@ -1,0 +1,14 @@
+geopandas
+rasterio
+rasterstats
+numpy
+pandas
+scipy
+scikit-image
+scikit-learn
+shap
+pystac-client
+planetary-computer
+pyproj
+shapely
+matplotlib

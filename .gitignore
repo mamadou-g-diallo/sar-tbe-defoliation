@@ -1,0 +1,19 @@
+# Données volumineuses (régénérables via download_data.py / feature_extraction.py,
+# ou trop lourdes / sous licence tierce pour être versionnées)
+data/tbe_raw/
+data/*/raw/
+data/*/processed/
+
+# Garder : data/shp/ (définition d'AOI, léger) et data/*/results/ (CSV + figures,
+# démonstration des résultats, quelques centaines de Ko)
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Docs de travail (PDF/DOCX générés localement pour la candidature, hors dépôt)
+*.docx
+*.pdf
+.~lock.*#
+
+.DS_Store
