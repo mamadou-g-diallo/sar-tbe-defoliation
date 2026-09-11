@@ -20,6 +20,7 @@ A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to
 - [Repository structure](#repository-structure)
 - [Getting started](#getting-started)
 - [Results & discussion](#results--discussion)
+- [OS2 — first physical-model test](#os2--first-physical-model-test-negative-result-and-why-it-matters)
 - [Limitations](#limitations)
 - [Roadmap](#roadmap)
 - [License & data attribution](#license--data-attribution)
@@ -201,6 +202,27 @@ defoliation, canopy gaps) carries information that a single average value discar
 airborne LiDAR structural metrics (canopy height variance, gap fraction) could test directly in the
 next phase of this project.
 
+## OS2 — first physical-model test (negative result, and why it matters)
+
+As a first, deliberately quick test of OS2, [`os2_water_cloud_model.py`](os2_water_cloud_model.py)
+fits a single-angle Water Cloud Model (Attema & Ulaby, 1978) to the same OS1 samples, estimating one
+effective vegetation descriptor `V` per severity class jointly with shared coefficients `A`, `B`,
+`σ0_soil` per polarization, by nonlinear least squares.
+
+**Result: it doesn't work, and the reason is diagnostic.** The best possible 4-value-per-class model
+caps out at R² ≈ 0.003 on both `VV_dB` and `VH_dB` (checked directly against the per-class means, not
+just the WCM fit) — the raw single-polarization backscatter carries essentially **no** class-level
+signal once averaged per polygon; the within-class standard deviation (3–9 dB) dwarfs any between-class
+difference (<1 dB). This is not an optimizer failure; it holds for the *best achievable* discrete model.
+
+This sharpens, rather than contradicts, the OS1 finding: the RVI's non-affected/affected separation
+comes specifically from the **VH/VV ratio**, which cancels common-mode nuisance variance (local
+incidence angle, general moisture, calibration) that dominates each raw band on its own across a
+~2,000 km² AOI. The practical implication for OS2 is concrete: a physically meaningful WCM inversion
+needs **per-pixel local incidence angle correction and finer spatial stratification** before fitting —
+not a single global angle and one shared soil term over a heterogeneous multi-lake boreal landscape.
+This becomes a priority prerequisite, promoted from the general limitations list below.
+
 ## Limitations
 
 - Only 2–4 Sentinel-1 scenes per yearly composite; no dedicated spatial speckle filter beyond the
@@ -219,9 +241,10 @@ concrete fix identified for the next phase (see below).
 This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
 
 - **OS1 (this repo)** — characterize the SAR signal against defoliation severity.
-- **OS2** — parameterize a Water Cloud Model / MIMICS forward scattering model for balsam fir / black
-  spruce; couple it to a dielectric mixing model driven by field-measured tree water potential and sap
-  flow, to move from empirical classification to physical inversion.
+- **OS2** — a first single-angle Water Cloud Model test (in this repo, see below) shows raw VV/VH
+  means carry no class-level signal on their own; next step is per-pixel local-incidence-angle
+  correction and finer spatial stratification before fitting, then coupling to a dielectric mixing
+  model driven by field-measured tree water potential and sap flow.
 - **OS3** — cross-validate the SAR-derived stress index against dendrochronological growth series
   (ring width, blue intensity) from field cores.
 - **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing
