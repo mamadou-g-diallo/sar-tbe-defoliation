@@ -60,6 +60,10 @@ on the 4-class problem (chance ≈ 25–30% given class imbalance) — a real bu
 with the literature and with the expectation that **severity grading requires more than a linear radar
 index** (see [Results & discussion](#results--discussion)).
 
+*Caveat, established by the OS2 follow-up test below: part of this RVI separation appears to be a
+spatial confound rather than a purely temporal defoliation response — see
+[OS2 — first physical-model test](#os2--first-physical-model-test-negative-result-and-why-it-matters).*
+
 ## Architecture
 
 ```mermaid
@@ -218,10 +222,38 @@ difference (<1 dB). This is not an optimizer failure; it holds for the *best ach
 This sharpens, rather than contradicts, the OS1 finding: the RVI's non-affected/affected separation
 comes specifically from the **VH/VV ratio**, which cancels common-mode nuisance variance (local
 incidence angle, general moisture, calibration) that dominates each raw band on its own across a
-~2,000 km² AOI. The practical implication for OS2 is concrete: a physically meaningful WCM inversion
-needs **per-pixel local incidence angle correction and finer spatial stratification** before fitting —
-not a single global angle and one shared soil term over a heterogeneous multi-lake boreal landscape.
-This becomes a priority prerequisite, promoted from the general limitations list below.
+~2,000 km² AOI.
+
+**Follow-up test.** Planetary Computer's `sentinel-1-rtc` collection ships no incidence-angle asset
+(confirmed directly on the STAC item — only `vv`, `vh`, `tilejson`, `preview`). But since every year is
+acquired on the same fixed relative orbit, incidence angle and static terrain effects are **constant
+over time for a given pixel** — so [`feature_extraction.py`](feature_extraction.py) computes a
+**per-pixel temporal anomaly** (this year's value minus that pixel's own 5-year mean) as a
+geometry-correction proxy that doesn't require the missing band, and
+[`os2_anomaly_correction.py`](os2_anomaly_correction.py) re-runs the diagnostic on it:
+
+| | Raw | Anomaly-corrected |
+|---|---|---|
+| Intra-class std, VV/VH | 6.2 dB | 0.6–0.9 dB (−86 to −90%) |
+| Class-mean R² ceiling, VV/VH/RVI | 0.003 / 0.003 / 0.012 | 0.006 / 0.004 / 0.003 |
+| Random Forest accuracy (5-fold) | 38% | 41% |
+
+The correction **works exactly as designed** — it strips 86–90% of the within-class noise from VV/VH,
+confirming that incidence-angle/static-terrain effects (not defoliation) were the dominant source of
+raw variance. But the class-mean ceiling stays essentially at zero either way, and RF accuracy only
+inches up (+3 points). Tellingly, RVI — already a *ratio*, so partly self-normalizing against the very
+effects the anomaly correction targets — loses almost all of its (modest) raw R² once that correction
+is applied. Read together, this suggests the OS1 RVI separation was **partly a spatial-confound
+artifact** (non-affected controls and TBE polygons don't just differ by defoliation, they also differ
+by location) rather than a purely temporal defoliation response — an important caveat on the OS1 result
+above, not just a footnote on OS2.
+
+The practical implication for OS2 is now more specific than "correct for incidence angle": amplitude-
+only descriptors (single or dual-pol backscatter level) appear to carry very little severity
+information at this resolution and compositing scheme, corrected or not. The physically-motivated path
+already planned — coupling a Water Cloud Model to field-measured canopy water content/hydraulics,
+plus higher-order descriptors (polarimetric decomposition, InSAR coherence, texture) — is reinforced by
+this negative result, not just still an option.
 
 ## Limitations
 
@@ -241,10 +273,13 @@ concrete fix identified for the next phase (see below).
 This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
 
 - **OS1 (this repo)** — characterize the SAR signal against defoliation severity.
-- **OS2** — a first single-angle Water Cloud Model test (in this repo, see below) shows raw VV/VH
-  means carry no class-level signal on their own; next step is per-pixel local-incidence-angle
-  correction and finer spatial stratification before fitting, then coupling to a dielectric mixing
-  model driven by field-measured tree water potential and sap flow.
+- **OS2** — two tests run so far (this repo): a single-angle Water Cloud Model, then a per-pixel
+  temporal-anomaly correction standing in for the incidence-angle band Planetary Computer doesn't
+  provide. Both confirm amplitude-only descriptors carry very little severity signal, corrected or
+  not — reinforcing rather than replacing the originally planned path: couple a Water Cloud Model to
+  field-measured tree water potential/sap flow via a dielectric mixing model, and bring in
+  higher-order descriptors (polarimetric decomposition, InSAR coherence, texture) that amplitude alone
+  can't provide.
 - **OS3** — cross-validate the SAR-derived stress index against dendrochronological growth series
   (ring width, blue intensity) from field cores.
 - **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing

@@ -43,6 +43,48 @@ def save(path, arr, profile, nodata=NODATA):
         dst.write(np.where(np.isnan(arr), nodata, arr).astype(np.float32), 1)
 
 
+MIN_VALID_YEARS = 3  # minimum d'années valides pour calculer une référence pixel fiable
+
+
+def compute_anomalies(tags=("vv_db", "vh_db", "rvi")):
+    """Anomalie temporelle par pixel = valeur de l'année - moyenne pluriannuelle
+    au même pixel. Comme toutes les années sont acquises sur la même orbite
+    relative (cf. download_data.py), l'angle d'incidence local et les effets
+    statiques de terrain/sous-bois sont constants dans le temps pour un pixel
+    donné : les soustraire élimine ce bruit géométrique sans avoir besoin
+    d'une bande d'angle d'incidence (absente des produits RTC de Planetary
+    Computer - vérifié directement sur les assets STAC)."""
+    for tag in tags:
+        stack, profile = [], None
+        for year in YEARS:
+            path = PROC_DIR / f"{tag}_{year}.tif"
+            if not path.exists():
+                continue
+            arr, profile = read(path)
+            arr = np.where(arr == NODATA, np.nan, arr)
+            stack.append(arr)
+        if len(stack) < MIN_VALID_YEARS:
+            print(f"  [!] {tag}: seulement {len(stack)} année(s) disponible(s), anomalie ignorée")
+            continue
+
+        cube = np.stack(stack)  # (n_annees, H, W)
+        n_valid_px = np.sum(~np.isnan(cube), axis=0)
+        baseline = np.where(n_valid_px >= MIN_VALID_YEARS, np.nanmean(cube, axis=0), np.nan)
+        save(PROC_DIR / f"baseline_{tag}.tif", baseline, profile)
+
+        for year in YEARS:
+            path = PROC_DIR / f"{tag}_{year}.tif"
+            if not path.exists():
+                continue
+            arr, _ = read(path)
+            arr = np.where(arr == NODATA, np.nan, arr)
+            anom = arr - baseline
+            save(PROC_DIR / f"anom_{tag}_{year}.tif", anom, profile)
+
+        print(f"  {tag}: référence pixel calculée sur {len(stack)} années, "
+              f"anomalies écrites pour chaque année")
+
+
 def main():
     for year in YEARS:
         vv_path = RAW_DIR / f"s1_{year}_vv.tif"
@@ -70,6 +112,9 @@ def main():
         n_valid = int(valid.sum())
         print(f"  {year}: VV_dB [{np.nanmin(vv_db):.1f}, {np.nanmax(vv_db):.1f}] dB, "
               f"RVI moyen {np.nanmean(rvi):.3f}  ({n_valid} px valides)")
+
+    print("\nCalcul des anomalies temporelles par pixel (correction géométrie/orbite)...")
+    compute_anomalies()
 
     print(f"\nTerminé. Rasters dérivés dans : {PROC_DIR}")
 
