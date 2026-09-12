@@ -255,6 +255,24 @@ already planned — coupling a Water Cloud Model to field-measured canopy water 
 plus higher-order descriptors (polarimetric decomposition, InSAR coherence, texture) — is reinforced by
 this negative result, not just still an option.
 
+**Second follow-up test: GLCM texture.** [`os2_texture_glcm.py`](os2_texture_glcm.py) computes
+gray-level co-occurrence texture (contrast, homogeneity, energy, entropy; distance 1, 4 orientations
+averaged) directly on each polygon's pixels — a structural descriptor that doesn't require an
+amplitude shift to detect a patchier, more heterogeneous defoliated canopy:
+
+| | Amplitude (raw) | Amplitude (anomaly) | **Texture (GLCM)** |
+|---|---|---|---|
+| Best class-mean R² ceiling | 0.012 (RVI) | 0.006 | **0.040 (VH homogeneity)** |
+| Random Forest accuracy (5-fold) | 38% | 41% | 35% (n=431, vs. 1,329 for amplitude) |
+
+Texture's R² ceiling is **an order of magnitude higher** than any amplitude descriptor — homogeneity is
+lower (canopy more heterogeneous) in severely defoliated stands, a physically sensible direction. But
+its Random Forest accuracy is lower than amplitude's, mostly because GLCM needs a minimum patch size
+(≥16 valid 20 m pixels ≈ 0.64 ha) to be numerically meaningful, which drops the usable sample from 1,329
+to 431 — a smaller, size-biased subset, not a fair head-to-head comparison. The right next step is
+computing GLCM only where polygon size allows it and combining it with the amplitude descriptors in one
+model, rather than treating the two as competitors.
+
 ## Limitations
 
 - Only 2–4 Sentinel-1 scenes per yearly composite; no dedicated spatial speckle filter beyond the
@@ -273,13 +291,13 @@ concrete fix identified for the next phase (see below).
 This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
 
 - **OS1 (this repo)** — characterize the SAR signal against defoliation severity.
-- **OS2** — two tests run so far (this repo): a single-angle Water Cloud Model, then a per-pixel
-  temporal-anomaly correction standing in for the incidence-angle band Planetary Computer doesn't
-  provide. Both confirm amplitude-only descriptors carry very little severity signal, corrected or
-  not — reinforcing rather than replacing the originally planned path: couple a Water Cloud Model to
-  field-measured tree water potential/sap flow via a dielectric mixing model, and bring in
-  higher-order descriptors (polarimetric decomposition, InSAR coherence, texture) that amplitude alone
-  can't provide.
+- **OS2** — three tests run so far (this repo): a single-angle Water Cloud Model, a per-pixel
+  temporal-anomaly correction standing in for the missing incidence-angle band, and GLCM texture.
+  Amplitude carries very little severity signal, corrected or not; texture does noticeably better
+  (R² ceiling 0.04 vs. 0.003–0.012) but on a smaller, size-filtered sample. Next: combine texture and
+  amplitude in one model with proper handling of the polygon-size cutoff, then couple to field-measured
+  tree water potential/sap flow via a dielectric mixing model, and add InSAR coherence once SLC pairs
+  are worth acquiring.
 - **OS3** — cross-validate the SAR-derived stress index against dendrochronological growth series
   (ring width, blue intensity) from field cores.
 - **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing
