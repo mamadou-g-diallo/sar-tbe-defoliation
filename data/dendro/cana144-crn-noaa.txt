@@ -1,0 +1,312 @@
+# Krause - Mont Valin 4 and 6 - ABBA - ITRDB CANA144
+#-----------------------------------------------------------------------
+#               World Data Service for Paleoclimatology, Boulder
+#                                  and
+#                     NOAA Paleoclimatology Program
+#             National Centers for Environmental Information (NCEI)
+#-----------------------------------------------------------------------
+# Template Version 4.0
+# Encoding: UTF-8
+# NOTE: Please cite original publication,  NOAA Landing Page URL, dataset and publication DOIs (where available), and date accessed when using these data.
+# If there is no publication information, please cite investigator, study title, NOAA Landing Page URL, and date accessed.
+#
+# NOAA_Landing_Page: https://www.ncei.noaa.gov/access/paleo-search/study/3755
+#   Landing_Page_Description: NOAA Landing Page of study
+#
+# Study_Level_JSON_Metadata: https://www.ncei.noaa.gov/pub/data/metadata/published/paleo/json/cana144-crn-noaa.txt
+#   Study_Level_JSON_Description: Raw Measurements - NOAA Template File
+#
+# Data_Type: Tree Ring
+#
+# Dataset_DOI: 
+#
+# Science_Keywords: 
+#--------------------
+# Resource_Links
+#
+# Data_Download_Resource: /pub/data/paleo/treering/chronologies/northamerica/canada/cana144-crn-noaa.txt
+#   Data_Download_Description: Chronology - NOAA Template File
+#
+#--------------------
+#
+# Archive: Tree Ring
+#
+# Dataset_DOI: 
+#
+# Science_Keywords: 
+#--------------------
+# Contribution_Date
+# Date: 2002-04-26
+#--------------------
+# File_Last_Modified_Date
+# Date: 2023-11-17
+#--------------------
+# Title
+#   Study_Name: Krause - Mont Valin 4 and 6 - ABBA - ITRDB CANA144
+#--------------------
+# Investigators: Krause, C.; Morin, H.
+#--------------------
+# Description_Notes_and_Keywords
+#   Description: NOAA Template Chronology file added 2018-12-14.; NOAA Template Chronology file added 2023-11-17.
+#--------------------
+# Publication
+#   Authors: 
+#   Journal_Name: 
+#   Published_Title: 
+#   Published_Date_or_Year: 
+#   Volume: 
+#   Pages: 
+#   Report_Number: 
+#   DOI: 
+#   Full_Citation: 
+#   Abstract: 
+#--------------------
+# Site_Information
+#   Site_Name:  Mont Valin 4 and 6
+#   Location: Quebec
+#   Northernmost_Latitude: 48.08
+#   Southernmost_Latitude: 48.08
+#   Easternmost_Longitude: -70.07
+#   Westernmost_Longitude: -70.07
+#   Elevation: 760
+#--------------------
+# Data_Collection
+#   Collection_Name:  CANA144
+#   Earliest_Year: 1789
+#   Most_Recent_Year: 1994
+#   Time_Unit: CE
+#   Parameter_Keywords: ring width
+#   Notes: 
+#--------------------
+# Species
+#
+# Tree_Species_Download_Resource:  https://www.ncei.noaa.gov/pub/data/paleo/templates/tree-species-code.csv
+#   Tree_Species_Download_Description:  List of accepted tree species names and codes.
+#
+# Species_Name: Abies balsamea (L.) Mill.
+# Common_Name: balsam fir
+# Tree_Species_Code: ABBA
+#--------------------
+# Chronology_Information 
+#   Chronology: 
+#----------------------
+# Variables 
+#
+# PaST_Thesaurus_Download_Resource: https://www.ncei.noaa.gov/pub/data/paleo/PaST-thesaurus/SKOS/past-thesaurus-v1.0.rdf
+#   PaST_Thesaurus_Download_Description: Paleoenvironmental Standard Terms (PaST) Thesaurus terms, definitions, and relationships in SKOS format.
+#
+#  variables format: shortname <tab> var components: what,material,error,units,seasonality,archive,detail,method, C or N for Char or Numeric data,additional information
+## age_CE	age,,,year Common Era,,tree ring,,,N,
+## trsgi	tree ring standardized growth index,,,,,tree ring,composited,standard chronology method,N,
+## numsamp	number of samples,,,count,,tree ring,,,N,
+#
+#---------------------
+# Data:
+# Missing_Values: -999
+age_CE	trsgi	numsamp
+1789	1340	-999
+1790	 920	-999
+1791	 590	-999
+1792	 270	-999
+1793	 570	-999
+1794	 560	-999
+1795	 550	-999
+1796	 250	-999
+1797	 530	-999
+1798	 520	-999
+1799	 780	-999
+1800	 770	-999
+1801	 490	-999
+1802	 740	-999
+1803	1050	-999
+1804	 720	-999
+1805	 710	-999
+1806	1950	-999
+1807	2260	-999
+1808	1590	-999
+1809	1760	-999
+1810	1260	-999
+1811	1960	-999
+1812	1530	-999
+1813	1430	-999
+1814	1230	-999
+1815	 940	-999
+1816	 950	-999
+1817	1150	-999
+1818	1740	-999
+1819	1950	-999
+1820	1630	-999
+1821	2310	-999
+1822	2250	-999
+1823	1310	-999
+1824	1150	-999
+1825	1110	-999
+1826	1230	-999
+1827	1120	-999
+1828	 860	-999
+1829	1380	-999
+1830	1090	-999
+1831	 890	-999
+1832	1210	-999
+1833	1280	-999
+1834	1180	-999
+1835	1220	-999
+1836	1060	-999
+1837	1050	-999
+1838	1200	-999
+1839	 860	-999
+1840	1240	-999
+1841	1060	-999
+1842	 790	-999
+1843	 850	-999
+1844	 760	-999
+1845	1020	-999
+1846	1070	-999
+1847	 870	-999
+1848	1080	-999
+1849	1010	-999
+1850	 850	-999
+1851	 980	-999
+1852	 850	-999
+1853	 800	-999
+1854	 910	-999
+1855	 810	-999
+1856	 840	-999
+1857	 860	-999
+1858	 760	-999
+1859	1030	-999
+1860	 880	-999
+1861	1080	-999
+1862	1110	-999
+1863	1130	-999
+1864	1040	-999
+1865	1060	-999
+1866	1140	-999
+1867	1140	-999
+1868	 920	-999
+1869	1050	-999
+1870	1030	-999
+1871	1080	-999
+1872	 990	-999
+1873	 910	-999
+1874	 990	-999
+1875	 930	-999
+1876	 740	-999
+1877	 890	-999
+1878	 880	-999
+1879	 820	-999
+1880	 930	-999
+1881	 940	-999
+1882	 990	-999
+1883	 970	-999
+1884	 910	-999
+1885	 930	-999
+1886	1010	-999
+1887	 910	-999
+1888	 960	-999
+1889	 980	-999
+1890	 930	-999
+1891	 990	-999
+1892	1080	-999
+1893	1020	-999
+1894	1090	-999
+1895	 970	-999
+1896	1030	-999
+1897	 890	-999
+1898	 860	-999
+1899	 900	-999
+1900	 970	-999
+1901	1040	-999
+1902	 990	-999
+1903	 930	-999
+1904	1010	-999
+1905	 860	-999
+1906	 810	-999
+1907	 720	-999
+1908	 840	-999
+1909	 850	-999
+1910	 910	-999
+1911	 950	-999
+1912	 860	-999
+1913	 580	-999
+1914	 390	-999
+1915	 520	-999
+1916	 630	-999
+1917	 660	-999
+1918	 710	-999
+1919	 790	-999
+1920	 760	-999
+1921	 840	-999
+1922	 960	-999
+1923	 870	-999
+1924	 980	-999
+1925	 930	-999
+1926	 880	-999
+1927	 980	-999
+1928	 960	-999
+1929	 860	-999
+1930	1000	-999
+1931	1240	-999
+1932	1200	-999
+1933	1140	-999
+1934	1060	-999
+1935	1190	-999
+1936	1050	-999
+1937	1160	-999
+1938	1060	-999
+1939	1250	-999
+1940	1180	-999
+1941	1160	-999
+1942	1120	-999
+1943	1090	-999
+1944	1040	-999
+1945	1090	-999
+1946	1140	-999
+1947	1110	-999
+1948	1240	-999
+1949	1150	-999
+1950	 790	-999
+1951	 560	-999
+1952	 520	-999
+1953	 770	-999
+1954	1090	-999
+1955	1230	-999
+1956	1010	-999
+1957	 920	-999
+1958	 960	-999
+1959	 970	-999
+1960	 940	-999
+1961	1200	-999
+1962	1060	-999
+1963	1060	-999
+1964	1220	-999
+1965	1100	-999
+1966	1100	-999
+1967	1010	-999
+1968	 950	-999
+1969	1130	-999
+1970	1050	-999
+1971	1020	-999
+1972	1080	-999
+1973	1070	-999
+1974	1040	-999
+1975	 990	-999
+1976	 620	-999
+1977	 270	-999
+1978	 240	-999
+1979	 340	-999
+1980	 850	-999
+1981	 840	-999
+1982	 830	-999
+1983	 970	-999
+1984	 790	-999
+1985	 930	-999
+1986	 980	-999
+1987	1070	-999
+1988	1170	-999
+1989	1150	-999
+1990	1240	-999
+1991	1280	-999
+1992	1180	-999
+1993	1470	-999
+1994	 450	-999

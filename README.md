@@ -21,6 +21,7 @@ A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to
 - [Getting started](#getting-started)
 - [Results & discussion](#results--discussion)
 - [OS2 — first physical-model test](#os2--first-physical-model-test-negative-result-and-why-it-matters)
+- [OS3 — dendrochronology](#os3--dendrochronology-what-open-data-can-and-cant-do)
 - [Limitations](#limitations)
 - [Roadmap](#roadmap)
 - [License & data attribution](#license--data-attribution)
@@ -106,6 +107,7 @@ and setting one environment variable (`TBE_AOI`).
 |---|---|---|---|
 | Sentinel-1 RTC (gamma0, terrain-corrected) | ESA Copernicus, via [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/) STAC catalog | Remote windowed read, no account | Free & open (Copernicus data policy) |
 | Spruce budworm defoliation polygons (`TBE_2014_2025`, 411,490 features, fields `ANNEE`/`Ia`/`Niveau`) | Ministère des Ressources naturelles et des Forêts (MRNF/MFFP), via [Données Québec](https://www.donneesquebec.ca/recherche/fr/dataset/donnees-sur-les-perturbations-naturelles-insecte-tordeuse-des-bourgeons-de-lepinette) | Bulk download (Esri File Geodatabase, ~1.2 GB) | CC-BY 4.0 |
+| Tree-ring chronologies (CANA141/143/144, Krause & Morin) | [NOAA/NCEI World Data Service for Paleoclimatology, ITRDB](https://www.ncei.noaa.gov/products/paleoclimatology/tree-ring) | Direct file download (`.crn`, a few KB each) | Public domain (U.S. government data, cite investigators + NOAA landing page) |
 
 No field data, no LiDAR, no commercial imagery — deliberately, to keep this proof-of-concept
 reproducible by anyone with a laptop and an internet connection.
@@ -288,6 +290,33 @@ artifact of the smaller, larger-polygon-biased sample texture requires, not of t
 informative. This is the kind of correction that matters more than either result on its own: **check
 that two numbers you're comparing were computed on the same data before trusting the gap between them.**
 
+## OS3 — dendrochronology: what open data can and can't do
+
+[`os3_dendro_check.py`](os3_dendro_check.py) pulls the three nearest published tree-ring chronologies
+(NOAA/[ITRDB](https://www.ncei.noaa.gov/products/paleoclimatology/tree-ring), Krause & Morin) to the
+AOI — one (Lac Onatchiway, black spruce) falls *inside* the Sentinel-1 bounding box; the other two
+(Mont Valin, Lac Liberal — balsam fir, TBE's primary host) are within the same region.
+
+**The hard limit, stated plainly**: all three end in **1993–1995**, roughly two decades before Sentinel-1
+existed (2014+). Open dendro data cannot directly validate the SAR-derived index from this repo — that
+requires new field coring co-located with current SAR observations, which is exactly what OS3 is
+scoped to do in the full research plan.
+
+What these chronologies *can* do, and do well: corroborate that they capture a real, known regional
+signal, which is a meaningful check on data quality before investing in new fieldwork guided by the
+same sites/species.
+
+<p align="center">
+  <img src="data/saguenay_lsj/dendro_vs_outbreak.png" width="640">
+</p>
+
+All three independent chronologies hit their growth minimum in the **same year, 1978**, within the
+epidemic window documented specifically for this region by Morin & Laprise (1990) — synchrony across
+independent sites that rules out chance. The *magnitude* tracks host preference exactly as entomology
+predicts: balsam fir (the primary TBE host) drops 77–78% from its pre-outbreak level, black spruce (a
+minor host) only 35%. Old data, but a real, physically coherent, cross-validated signal — a solid basis
+for planning where new coring would be most informative.
+
 ## Limitations
 
 - Only 2–4 Sentinel-1 scenes per yearly composite; no dedicated spatial speckle filter beyond the
@@ -312,8 +341,11 @@ This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
   clears ~40% accuracy on open data alone — the ceiling isn't a missing descriptor, it's the missing
   physical/field layer. Next: couple a Water Cloud Model to field-measured tree water potential/sap
   flow via a dielectric mixing model, and add InSAR coherence once SLC pairs are worth acquiring.
-- **OS3** — cross-validate the SAR-derived stress index against dendrochronological growth series
-  (ring width, blue intensity) from field cores.
+- **OS3** — a first check (this repo) against the 3 nearest open ITRDB chronologies confirms they
+  capture a real, host-specific 1978 growth crash synchronized across independent sites, but all three
+  end in 1993–1995 — decades before Sentinel-1 exists. Cross-validating the SAR-derived stress index
+  requires new field coring (ring width, blue intensity) co-located with current SAR observations, not
+  a reuse of legacy chronologies.
 - **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing
   foundation model, and package an operational severity index for forest harvest planning.
 

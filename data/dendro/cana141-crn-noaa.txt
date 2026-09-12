@@ -1,0 +1,351 @@
+# Krause - Lac Liberal 23 - ABBA - ITRDB CANA141
+#-----------------------------------------------------------------------
+#               World Data Service for Paleoclimatology, Boulder
+#                                  and
+#                     NOAA Paleoclimatology Program
+#             National Centers for Environmental Information (NCEI)
+#-----------------------------------------------------------------------
+# Template Version 4.0
+# Encoding: UTF-8
+# NOTE: Please cite original publication,  NOAA Landing Page URL, dataset and publication DOIs (where available), and date accessed when using these data.
+# If there is no publication information, please cite investigator, study title, NOAA Landing Page URL, and date accessed.
+#
+# NOAA_Landing_Page: https://www.ncei.noaa.gov/access/paleo-search/study/3753
+#   Landing_Page_Description: NOAA Landing Page of study
+#
+# Study_Level_JSON_Metadata: https://www.ncei.noaa.gov/pub/data/metadata/published/paleo/json/cana141-crn-noaa.txt
+#   Study_Level_JSON_Description: Raw Measurements - NOAA Template File
+#
+# Data_Type: Tree Ring
+#
+# Dataset_DOI: 
+#
+# Science_Keywords: 
+#--------------------
+# Resource_Links
+#
+# Data_Download_Resource: /pub/data/paleo/treering/chronologies/northamerica/canada/cana141-crn-noaa.txt
+#   Data_Download_Description: Chronology - NOAA Template File
+#
+#--------------------
+#
+# Archive: Tree Ring
+#
+# Dataset_DOI: 
+#
+# Science_Keywords: 
+#--------------------
+# Contribution_Date
+# Date: 2002-04-26
+#--------------------
+# File_Last_Modified_Date
+# Date: 2023-11-17
+#--------------------
+# Title
+#   Study_Name: Krause - Lac Liberal 23 - ABBA - ITRDB CANA141
+#--------------------
+# Investigators: Krause, C.; Morin, H.
+#--------------------
+# Description_Notes_and_Keywords
+#   Description: NOAA Template Chronology file added 2018-12-14.; NOAA Template Chronology file added 2023-11-17.
+#--------------------
+# Publication
+#   Authors: 
+#   Journal_Name: 
+#   Published_Title: 
+#   Published_Date_or_Year: 
+#   Volume: 
+#   Pages: 
+#   Report_Number: 
+#   DOI: 
+#   Full_Citation: 
+#   Abstract: 
+#--------------------
+# Site_Information
+#   Site_Name:  Lac Liberal 23
+#   Location: Quebec
+#   Northernmost_Latitude: 49.07
+#   Southernmost_Latitude: 49.07
+#   Easternmost_Longitude: -72.1
+#   Westernmost_Longitude: -72.1
+#   Elevation: 470
+#--------------------
+# Data_Collection
+#   Collection_Name:  CANA141
+#   Earliest_Year: 1751
+#   Most_Recent_Year: 1995
+#   Time_Unit: CE
+#   Parameter_Keywords: ring width
+#   Notes: 
+#--------------------
+# Species
+#
+# Tree_Species_Download_Resource:  https://www.ncei.noaa.gov/pub/data/paleo/templates/tree-species-code.csv
+#   Tree_Species_Download_Description:  List of accepted tree species names and codes.
+#
+# Species_Name: Abies balsamea (L.) Mill.
+# Common_Name: balsam fir
+# Tree_Species_Code: ABBA
+#--------------------
+# Chronology_Information 
+#   Chronology: 
+#----------------------
+# Variables 
+#
+# PaST_Thesaurus_Download_Resource: https://www.ncei.noaa.gov/pub/data/paleo/PaST-thesaurus/SKOS/past-thesaurus-v1.0.rdf
+#   PaST_Thesaurus_Download_Description: Paleoenvironmental Standard Terms (PaST) Thesaurus terms, definitions, and relationships in SKOS format.
+#
+#  variables format: shortname <tab> var components: what,material,error,units,seasonality,archive,detail,method, C or N for Char or Numeric data,additional information
+## age_CE	age,,,year Common Era,,tree ring,,,N,
+## trsgi	tree ring standardized growth index,,,,,tree ring,composited,standard chronology method,N,
+## numsamp	number of samples,,,count,,tree ring,,,N,
+#
+#---------------------
+# Data:
+# Missing_Values: -999
+age_CE	trsgi	numsamp
+1751	 410	-999
+1752	 790	-999
+1753	 900	-999
+1754	 710	-999
+1755	 820	-999
+1756	1070	-999
+1757	 680	-999
+1758	 540	-999
+1759	 640	-999
+1760	 810	-999
+1761	 710	-999
+1762	 610	-999
+1763	 730	-999
+1764	 820	-999
+1765	1150	-999
+1766	1280	-999
+1767	1240	-999
+1768	1600	-999
+1769	1370	-999
+1770	1650	-999
+1771	1390	-999
+1772	1430	-999
+1773	1240	-999
+1774	1490	-999
+1775	1620	-999
+1776	1630	-999
+1777	1540	-999
+1778	1380	-999
+1779	1520	-999
+1780	1170	-999
+1781	1440	-999
+1782	1200	-999
+1783	1090	-999
+1784	1100	-999
+1785	1250	-999
+1786	1280	-999
+1787	1360	-999
+1788	1380	-999
+1789	1250	-999
+1790	1010	-999
+1791	 800	-999
+1792	 660	-999
+1793	 750	-999
+1794	 560	-999
+1795	 670	-999
+1796	 440	-999
+1797	 730	-999
+1798	 510	-999
+1799	 850	-999
+1800	1390	-999
+1801	1320	-999
+1802	1220	-999
+1803	1330	-999
+1804	1520	-999
+1805	1370	-999
+1806	1430	-999
+1807	1680	-999
+1808	1550	-999
+1809	1310	-999
+1810	1300	-999
+1811	1590	-999
+1812	1220	-999
+1813	1340	-999
+1814	1110	-999
+1815	1230	-999
+1816	1180	-999
+1817	1110	-999
+1818	1270	-999
+1819	1300	-999
+1820	1330	-999
+1821	1490	-999
+1822	1370	-999
+1823	1340	-999
+1824	1080	-999
+1825	1150	-999
+1826	1210	-999
+1827	1020	-999
+1828	 970	-999
+1829	1080	-999
+1830	1010	-999
+1831	1080	-999
+1832	 990	-999
+1833	 820	-999
+1834	 820	-999
+1835	 730	-999
+1836	 560	-999
+1837	 730	-999
+1838	 690	-999
+1839	 650	-999
+1840	 690	-999
+1841	 730	-999
+1842	 900	-999
+1843	 960	-999
+1844	 780	-999
+1845	 790	-999
+1846	 820	-999
+1847	 790	-999
+1848	 900	-999
+1849	 930	-999
+1850	 950	-999
+1851	1090	-999
+1852	1160	-999
+1853	1010	-999
+1854	 980	-999
+1855	 960	-999
+1856	1050	-999
+1857	 930	-999
+1858	 960	-999
+1859	1000	-999
+1860	 800	-999
+1861	 930	-999
+1862	1020	-999
+1863	 950	-999
+1864	1060	-999
+1865	 930	-999
+1866	1000	-999
+1867	 880	-999
+1868	 870	-999
+1869	 960	-999
+1870	 910	-999
+1871	1000	-999
+1872	 960	-999
+1873	 980	-999
+1874	 960	-999
+1875	 950	-999
+1876	 920	-999
+1877	 970	-999
+1878	 900	-999
+1879	 940	-999
+1880	1070	-999
+1881	1140	-999
+1882	1010	-999
+1883	 940	-999
+1884	 910	-999
+1885	 870	-999
+1886	 900	-999
+1887	 810	-999
+1888	 900	-999
+1889	 980	-999
+1890	 820	-999
+1891	 950	-999
+1892	 950	-999
+1893	 860	-999
+1894	 880	-999
+1895	 830	-999
+1896	 860	-999
+1897	 920	-999
+1898	 740	-999
+1899	 750	-999
+1900	 780	-999
+1901	 830	-999
+1902	 900	-999
+1903	 810	-999
+1904	 840	-999
+1905	 730	-999
+1906	 640	-999
+1907	 630	-999
+1908	 720	-999
+1909	 720	-999
+1910	 800	-999
+1911	 630	-999
+1912	 360	-999
+1913	 420	-999
+1914	 410	-999
+1915	 570	-999
+1916	 660	-999
+1917	 640	-999
+1918	 660	-999
+1919	 690	-999
+1920	 630	-999
+1921	 720	-999
+1922	 840	-999
+1923	 870	-999
+1924	1000	-999
+1925	1130	-999
+1926	1090	-999
+1927	1270	-999
+1928	1340	-999
+1929	1270	-999
+1930	1410	-999
+1931	1570	-999
+1932	1460	-999
+1933	1380	-999
+1934	1210	-999
+1935	1410	-999
+1936	1200	-999
+1937	1250	-999
+1938	1230	-999
+1939	1280	-999
+1940	1180	-999
+1941	1290	-999
+1942	1280	-999
+1943	1170	-999
+1944	1180	-999
+1945	1180	-999
+1946	1180	-999
+1947	1090	-999
+1948	1060	-999
+1949	 840	-999
+1950	 600	-999
+1951	 450	-999
+1952	 210	-999
+1953	 410	-999
+1954	 790	-999
+1955	 900	-999
+1956	 860	-999
+1957	 980	-999
+1958	1040	-999
+1959	1080	-999
+1960	 970	-999
+1961	1170	-999
+1962	1090	-999
+1963	1080	-999
+1964	1300	-999
+1965	1120	-999
+1966	1190	-999
+1967	1100	-999
+1968	1040	-999
+1969	1210	-999
+1970	1120	-999
+1971	1160	-999
+1972	1210	-999
+1973	1040	-999
+1974	 950	-999
+1975	 890	-999
+1976	 630	-999
+1977	 470	-999
+1978	 260	-999
+1979	 280	-999
+1980	 790	-999
+1981	 780	-999
+1982	 790	-999
+1983	 870	-999
+1984	 810	-999
+1985	 960	-999
+1986	 840	-999
+1987	1060	-999
+1988	1100	-999
+1989	1050	-999
+1990	1150	-999
+1991	1290	-999
+1992	1310	-999
+1993	1450	-999
+1994	1110	-999
+1995	1090	-999
