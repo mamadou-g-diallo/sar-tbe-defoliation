@@ -160,6 +160,7 @@ which descriptors — and which moments (mean vs. intra-polygon variability) —
 ├── os2_combined_features.py       # OS2: fair matched amplitude-vs-texture comparison
 ├── os3_dendro_check.py            # OS3: nearest open ITRDB chronologies vs. documented outbreak
 ├── os4_foundation_model_probe.py  # OS4 preview: SSL4EO-S12 linear probing
+├── os4_finetune.py                # OS4 preview: partial fine-tuning (layer4 + head)
 ├── requirements.txt
 ├── data/
 │   ├── shp/                 # AOI definition (saguenay_lsj.shp) — versioned, ~20 KB
@@ -333,13 +334,33 @@ genuine reason too: an insect outbreak is a spatially patchy, spreading process,
 context may carry real information about local outbreak intensity that a single polygon's own pixels
 don't.
 
-**What this doesn't settle**: no fine-tuning was attempted (linear probing only, the cheap first test);
-the patch size wasn't matched to polygon size the way the amplitude/texture comparison was; and a
-single train/test protocol (5-fold CV, same as everywhere else in this repo) isn't a substitute for a
-held-out spatial block or year. But as a first look pulled forward from OS4, it's the strongest result
-in this repository, and it reframes OS2/OS3's field-data conclusion: physical modeling and field
-hydraulics remain the right long-term direction, but representation learning on raw SAR appears to
-already recover signal that hand-crafted descriptors were leaving on the table.
+**What this doesn't settle**: the patch size wasn't matched to polygon size the way the
+amplitude/texture comparison was, and a single train/test protocol (5-fold CV, same as everywhere else
+in this repo) isn't a substitute for a held-out spatial block or year. But as a first look pulled
+forward from OS4, it's the strongest result in this repository, and it reframes OS2/OS3's field-data
+conclusion: physical modeling and field hydraulics remain the right long-term direction, but
+representation learning on raw SAR appears to already recover signal that hand-crafted descriptors
+were leaving on the table.
+
+**Does fine-tuning do even better? Tested — no, not at this sample size.**
+[`os4_finetune.py`](os4_finetune.py) unfreezes `layer4` + a new classification head (the rest of the
+backbone stays frozen) and trains on a 70/15/15 stratified split with class-weighted cross-entropy and
+flip/rotation augmentation (valid for SAR — no canonical orientation):
+
+<p align="center">
+  <img src="data/saguenay_lsj/results/os4_finetune_curves.png" width="640">
+</p>
+
+Training loss falls steadily; validation loss drops for ~4 epochs, then climbs while accuracy gets
+noisy — textbook overfitting on ~989 training patches against a 25M-parameter unfrozen block. Early
+stopping recovers the epoch-5 checkpoint: **59.9% test accuracy** (n=212, single held-out split) versus
+**64.0%** for the frozen linear probe (5-fold CV, n=1413) — the fine-tuned model doesn't clearly beat
+the simpler approach, and the two numbers aren't even on a fully comparable footing (one hold-out split
+vs. cross-validated). At this sample size, treating the pre-trained embeddings as fixed and training
+only a lightweight classifier on top is not just cheaper — it appears to be the better choice.
+Fine-tuning would likely need substantially more labeled samples (or heavier regularization / a
+smaller unfrozen block) to pay off, which is worth keeping in mind for OS4 once new field data grows
+the training set.
 
 ## OS3 — dendrochronology: what open data can and can't do
 
@@ -397,11 +418,12 @@ This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
   end in 1993–1995 — decades before Sentinel-1 exists. Cross-validating the SAR-derived stress index
   requires new field coring (ring width, blue intensity) co-located with current SAR observations, not
   a reuse of legacy chronologies.
-- **OS4** — a first linear-probing test (this repo) against SSL4EO-S12 already outperforms every
-  hand-crafted descriptor (64.0% vs. 38–41% accuracy, gains concentrated in the léger/modéré/grave
-  grading that amplitude and texture couldn't do). Next: fine-tune rather than probe, test
-  transferability across regions/years, and package an operational severity index for forest harvest
-  planning.
+- **OS4** — linear probing on SSL4EO-S12 embeddings (this repo) already outperforms every hand-crafted
+  descriptor (64.0% vs. 38–41% accuracy, gains concentrated in the léger/modéré/grave grading that
+  amplitude and texture couldn't do); partial fine-tuning was tested too and overfits at this sample
+  size (59.9%, worse than the frozen probe) — more labeled data would likely be needed before
+  fine-tuning pays off. Next: test transferability across regions/years, and package an operational
+  severity index for forest harvest planning.
 
 ## License & data attribution
 

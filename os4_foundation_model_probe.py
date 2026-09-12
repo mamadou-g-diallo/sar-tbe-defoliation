@@ -59,11 +59,11 @@ def extract_patch(vv_ds, vh_ds, x, y, size=PATCH_PX):
     return np.stack([vv, vh]).astype(np.float32)
 
 
-def main():
-    model, transforms = load_model()
+def build_patch_dataset():
+    """Réutilisée par os4_finetune.py pour garder exactement le même jeu de
+    patches/étiquettes entre le probing gelé et le fine-tuning."""
     tbe = load_tbe_polygons()
-
-    patches, labels, meta = [], [], []
+    patches, labels = [], []
     for year in YEARS:
         vv_path, vh_path = PROC_DIR / f"vv_db_{year}.tif", PROC_DIR / f"vh_db_{year}.tif"
         if not vv_path.exists():
@@ -86,6 +86,12 @@ def main():
                 labels.append(int(row.severity))
                 n_ok += 1
         print(f"  {year}: {len(combined)} polygones -> {n_ok} patches valides")
+    return patches, labels
+
+
+def main():
+    model, transforms = load_model()
+    patches, labels = build_patch_dataset()
 
     print(f"\n{len(patches)} patches au total. Extraction des embeddings (ResNet50 SSL4EO-S12, gelé)...")
     X_img = torch.from_numpy(np.stack(patches))  # (N, 2, 64, 64)
