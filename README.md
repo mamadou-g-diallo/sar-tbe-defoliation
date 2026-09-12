@@ -269,9 +269,24 @@ Texture's R² ceiling is **an order of magnitude higher** than any amplitude des
 lower (canopy more heterogeneous) in severely defoliated stands, a physically sensible direction. But
 its Random Forest accuracy is lower than amplitude's, mostly because GLCM needs a minimum patch size
 (≥16 valid 20 m pixels ≈ 0.64 ha) to be numerically meaningful, which drops the usable sample from 1,329
-to 431 — a smaller, size-biased subset, not a fair head-to-head comparison. The right next step is
-computing GLCM only where polygon size allows it and combining it with the amplitude descriptors in one
-model, rather than treating the two as competitors.
+to 431 — a smaller, size-biased subset, not a fair head-to-head comparison yet.
+
+**Third follow-up test: a fair, matched comparison.** [`os2_combined_features.py`](os2_combined_features.py)
+computes amplitude and texture on the *same* 431 polygons in a single pass (rather than two independent
+samplings), then trains Random Forest on each feature set alone and combined:
+
+| Feature set | Random Forest accuracy (same n=431) |
+|---|---|
+| Amplitude alone (6 descriptors) | **39.4%** |
+| Texture alone (8 descriptors) | 34.6% |
+| Amplitude + texture combined (14 descriptors) | 39.7% |
+
+Once sample size is controlled for, amplitude alone is actually the **stronger** predictor, and
+combining it with texture buys essentially nothing (+0.3 points). The earlier "texture's R² ceiling is
+10× higher" reading was correct on its own terms but misleading as a comparison — it was partly an
+artifact of the smaller, larger-polygon-biased sample texture requires, not of texture being more
+informative. This is the kind of correction that matters more than either result on its own: **check
+that two numbers you're comparing were computed on the same data before trusting the gap between them.**
 
 ## Limitations
 
@@ -291,13 +306,12 @@ concrete fix identified for the next phase (see below).
 This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
 
 - **OS1 (this repo)** — characterize the SAR signal against defoliation severity.
-- **OS2** — three tests run so far (this repo): a single-angle Water Cloud Model, a per-pixel
-  temporal-anomaly correction standing in for the missing incidence-angle band, and GLCM texture.
-  Amplitude carries very little severity signal, corrected or not; texture does noticeably better
-  (R² ceiling 0.04 vs. 0.003–0.012) but on a smaller, size-filtered sample. Next: combine texture and
-  amplitude in one model with proper handling of the polygon-size cutoff, then couple to field-measured
-  tree water potential/sap flow via a dielectric mixing model, and add InSAR coherence once SLC pairs
-  are worth acquiring.
+- **OS2** — four tests run so far (this repo): a single-angle Water Cloud Model, a per-pixel
+  temporal-anomaly correction standing in for the missing incidence-angle band, GLCM texture, and a
+  matched amplitude-vs-texture-vs-combined comparison. None of amplitude, texture, or their combination
+  clears ~40% accuracy on open data alone — the ceiling isn't a missing descriptor, it's the missing
+  physical/field layer. Next: couple a Water Cloud Model to field-measured tree water potential/sap
+  flow via a dielectric mixing model, and add InSAR coherence once SLC pairs are worth acquiring.
 - **OS3** — cross-validate the SAR-derived stress index against dendrochronological growth series
   (ring width, blue intensity) from field cores.
 - **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing
