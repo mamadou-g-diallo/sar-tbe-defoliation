@@ -21,6 +21,7 @@ A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to
 - [Getting started](#getting-started)
 - [Results & discussion](#results--discussion)
 - [OS2 — first physical-model test](#os2--first-physical-model-test-negative-result-and-why-it-matters)
+- [OS4 preview — a pre-trained SAR foundation model](#os4-preview--a-pre-trained-sar-foundation-model-changes-the-picture)
 - [OS3 — dendrochronology](#os3--dendrochronology-what-open-data-can-and-cant-do)
 - [Limitations](#limitations)
 - [Roadmap](#roadmap)
@@ -153,6 +154,12 @@ which descriptors — and which moments (mean vs. intra-polygon variability) —
 ├── feature_extraction.py    # VV_dB, VH_dB, RVI rasters
 ├── join_defoliation.py      # zonal stats × TBE polygons + negative sampling → CSV
 ├── exploratory_analysis.py  # Random Forest + SHAP, figures
+├── os2_water_cloud_model.py       # OS2: single-angle Water Cloud Model calibration
+├── os2_anomaly_correction.py      # OS2: per-pixel temporal-anomaly correction test
+├── os2_texture_glcm.py            # OS2: GLCM texture descriptors
+├── os2_combined_features.py       # OS2: fair matched amplitude-vs-texture comparison
+├── os3_dendro_check.py            # OS3: nearest open ITRDB chronologies vs. documented outbreak
+├── os4_foundation_model_probe.py  # OS4 preview: SSL4EO-S12 linear probing
 ├── requirements.txt
 ├── data/
 │   ├── shp/                 # AOI definition (saguenay_lsj.shp) — versioned, ~20 KB
@@ -290,6 +297,50 @@ artifact of the smaller, larger-polygon-biased sample texture requires, not of t
 informative. This is the kind of correction that matters more than either result on its own: **check
 that two numbers you're comparing were computed on the same data before trusting the gap between them.**
 
+## OS4 preview — a pre-trained SAR foundation model changes the picture
+
+Every hand-crafted descriptor tried above (amplitude, incidence-angle-corrected amplitude, GLCM
+texture, and their combination) tops out around 38–41% accuracy. Before concluding that ~40% is a hard
+ceiling for open Sentinel-1 data on this problem, [`os4_foundation_model_probe.py`](os4_foundation_model_probe.py)
+tests one more thing, pulled forward from the OS4 roadmap item: **linear probing** on
+[SSL4EO-S12](https://arxiv.org/abs/2211.07044) — a ResNet50 pre-trained by self-supervised contrastive
+learning (MoCo) on global Sentinel-1 VV/VH, via [TorchGeo](https://torchgeo.readthedocs.io/). The
+backbone stays frozen (no fine-tuning); only a Random Forest is trained on its 2048-d embeddings, for
+the same 64×64 px (1.28 km) patch centered on each polygon centroid.
+
+| | Amplitude (RF) | **SSL4EO-S12 embeddings (RF)** |
+|---|---|---|
+| Overall accuracy | 38.3% | **64.0%** |
+| F1 — léger | 0.553 | **0.72** |
+| F1 — modéré | 0.270 | **0.58** |
+| F1 — grave | 0.101 | **0.39** |
+
+<p align="center">
+  <img src="data/saguenay_lsj/results/os4_ssl4eo_vs_amplitude.png" width="560">
+</p>
+
+This is not a majority-class trick: the gain concentrates exactly where amplitude was weakest —
+distinguishing *moderate* from *severe* damage, not just detecting that something is wrong. The one
+class that stays hard, non-affected controls (n≈24, unfiltered by ecoforest type), is hard for both
+methods alike, which is reassuring rather than suspicious.
+
+**Why trust this more than the earlier RVI false lead.** The OS2 anomaly test caught the RVI result
+being partly a spatial confound because it only separated *affected vs. non-affected* — exactly the
+split a location/land-cover artifact would produce. Here the improvement is *within* defoliated forest,
+grading léger → modéré → grave, which a simple "this looks like a different place" shortcut can't
+easily produce. The larger spatial context (1.28 km vs. a per-polygon zonal mean) plausibly helps for a
+genuine reason too: an insect outbreak is a spatially patchy, spreading process, and neighborhood
+context may carry real information about local outbreak intensity that a single polygon's own pixels
+don't.
+
+**What this doesn't settle**: no fine-tuning was attempted (linear probing only, the cheap first test);
+the patch size wasn't matched to polygon size the way the amplitude/texture comparison was; and a
+single train/test protocol (5-fold CV, same as everywhere else in this repo) isn't a substitute for a
+held-out spatial block or year. But as a first look pulled forward from OS4, it's the strongest result
+in this repository, and it reframes OS2/OS3's field-data conclusion: physical modeling and field
+hydraulics remain the right long-term direction, but representation learning on raw SAR appears to
+already recover signal that hand-crafted descriptors were leaving on the table.
+
 ## OS3 — dendrochronology: what open data can and can't do
 
 [`os3_dendro_check.py`](os3_dendro_check.py) pulls the three nearest published tree-ring chronologies
@@ -346,8 +397,11 @@ This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
   end in 1993–1995 — decades before Sentinel-1 exists. Cross-validating the SAR-derived stress index
   requires new field coring (ring width, blue intensity) co-located with current SAR observations, not
   a reuse of legacy chronologies.
-- **OS4** — test transferability across regions/years, benchmark against a pre-trained remote-sensing
-  foundation model, and package an operational severity index for forest harvest planning.
+- **OS4** — a first linear-probing test (this repo) against SSL4EO-S12 already outperforms every
+  hand-crafted descriptor (64.0% vs. 38–41% accuracy, gains concentrated in the léger/modéré/grave
+  grading that amplitude and texture couldn't do). Next: fine-tune rather than probe, test
+  transferability across regions/years, and package an operational severity index for forest harvest
+  planning.
 
 ## License & data attribution
 

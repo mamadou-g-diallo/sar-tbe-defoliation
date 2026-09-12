@@ -12,3 +12,5 @@ planetary-computer
 pyproj
 shapely
 matplotlib
+torch
+torchgeo

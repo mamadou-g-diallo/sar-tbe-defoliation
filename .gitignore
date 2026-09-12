@@ -6,6 +6,8 @@ data/*/processed/
 
 # Garder : data/shp/ (définition d'AOI, léger) et data/*/results/ (CSV + figures,
 # démonstration des résultats, quelques centaines de Ko)
+# cache régénérable (embeddings 2048-d x n échantillons, ~25 Mo)
+data/*/results/*embeddings*.csv
 
 __pycache__/
 *.pyc
