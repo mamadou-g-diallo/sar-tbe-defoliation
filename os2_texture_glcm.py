@@ -12,7 +12,7 @@ sévérité. Une défoliation change la structure spatiale du houppier
 rétrodiffusion - la texture (comment les valeurs de pixels voisins co-varient)
 est un candidat direct pour capter cet effet structural.
 
-Par polygone (TBE + témoins, mêmes géométries que join_defoliation.py), sur
+Par polygone (TBE + témoins, mêmes géométries que os1_join_defoliation.py), sur
 chaque bande VV_dB/VH_dB : matrice de co-occurrence de niveaux de gris (GLCM,
 distance=1, 4 orientations moyennées), puis contraste, homogénéité, énergie
 (ASM) et entropie - calculés directement sur les pixels du polygone plutôt
@@ -37,7 +37,7 @@ from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
 from config import YEARS, PROC_DIR, RESULT_DIR, SEVERITY_LABELS
-from join_defoliation import load_tbe_polygons, negative_samples
+from os1_join_defoliation import load_tbe_polygons, negative_samples
 
 LEVELS = 32
 DB_RANGE = {"vv_db": (-42.0, -4.0), "vh_db": (-49.0, -10.0)}  # bornes p1-p99, cf. README

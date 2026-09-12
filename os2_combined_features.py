@@ -25,7 +25,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
 from config import YEARS, PROC_DIR, RESULT_DIR
-from join_defoliation import load_tbe_polygons, negative_samples, zonal as zonal_amplitude
+from os1_join_defoliation import load_tbe_polygons, negative_samples, zonal as zonal_amplitude
 from os2_texture_glcm import zonal_texture
 
 AMP_FEATURES = ["vv_db_mean", "vh_db_mean", "rvi_mean", "vv_db_std", "vh_db_std", "rvi_std"]

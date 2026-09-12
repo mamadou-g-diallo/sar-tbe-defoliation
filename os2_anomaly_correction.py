@@ -2,10 +2,10 @@
 OS2 (suite) — la géodatabase RTC de Planetary Computer ne fournit aucune bande
 d'angle d'incidence local (vérifié directement sur les assets STAC : vv, vh,
 tilejson, preview - rien d'autre). Comme toutes les années sont acquises sur
-la même orbite relative (cf. download_data.py), l'angle d'incidence et les
+la même orbite relative (cf. os1_download_data.py), l'angle d'incidence et les
 effets statiques de terrain/sous-bois sont constants dans le temps pour un
 pixel donné : les retirer via une anomalie temporelle par pixel (valeur -
-moyenne pluriannuelle au même pixel, cf. feature_extraction.py ->
+moyenne pluriannuelle au même pixel, cf. os1_feature_extraction.py ->
 compute_anomalies) joue le même rôle qu'une correction géométrique, sans
 nécessiter la bande manquante.
 
@@ -17,8 +17,8 @@ Ce script compare, avant/après cette correction :
 Utilisation :
     conda activate hw_senegal
     TBE_AOI=<nom_aoi> python3 os2_anomaly_correction.py
-    (nécessite d'avoir exécuté feature_extraction.py et join_defoliation.py
-    ET join_defoliation_anomaly.py au préalable)
+    (nécessite d'avoir exécuté os1_feature_extraction.py, os1_join_defoliation.py
+    ET os2_join_defoliation_anomaly.py au préalable)
 """
 
 import matplotlib

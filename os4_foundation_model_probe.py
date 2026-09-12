@@ -31,7 +31,7 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from torchgeo.models import ResNet50_Weights, resnet50
 
 from config import YEARS, PROC_DIR, RESULT_DIR
-from join_defoliation import load_tbe_polygons, negative_samples
+from os1_join_defoliation import load_tbe_polygons, negative_samples
 
 PATCH_PX = 64
 WEIGHTS = ResNet50_Weights.SENTINEL1_ALL_MOCO

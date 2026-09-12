@@ -7,7 +7,7 @@ physique (Water Cloud Model / MIMICS) ou d'inversion.
 
 Utilisation :
     conda activate hw_senegal
-    TBE_AOI=<nom_aoi> python3 exploratory_analysis.py
+    TBE_AOI=<nom_aoi> python3 os1_exploratory_analysis.py
 """
 
 import matplotlib

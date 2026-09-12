@@ -15,7 +15,7 @@ dénudées).
 
 Utilisation :
     conda activate hw_senegal
-    TBE_AOI=<nom_aoi> python3 feature_extraction.py
+    TBE_AOI=<nom_aoi> python3 os1_feature_extraction.py
 """
 
 import numpy as np
@@ -49,7 +49,7 @@ MIN_VALID_YEARS = 3  # minimum d'années valides pour calculer une référence p
 def compute_anomalies(tags=("vv_db", "vh_db", "rvi")):
     """Anomalie temporelle par pixel = valeur de l'année - moyenne pluriannuelle
     au même pixel. Comme toutes les années sont acquises sur la même orbite
-    relative (cf. download_data.py), l'angle d'incidence local et les effets
+    relative (cf. os1_download_data.py), l'angle d'incidence local et les effets
     statiques de terrain/sous-bois sont constants dans le temps pour un pixel
     donné : les soustraire élimine ce bruit géométrique sans avoir besoin
     d'une bande d'angle d'incidence (absente des produits RTC de Planetary
@@ -90,7 +90,7 @@ def main():
         vv_path = RAW_DIR / f"s1_{year}_vv.tif"
         vh_path = RAW_DIR / f"s1_{year}_vh.tif"
         if not vv_path.exists():
-            print(f"  [!] {year}: composite manquant, exécuter download_data.py d'abord")
+            print(f"  [!] {year}: composite manquant, exécuter os1_download_data.py d'abord")
             continue
 
         vv, profile = read(vv_path)

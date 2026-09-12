@@ -12,7 +12,7 @@ terrain, sans autre traitement.
 
 Utilisation :
     conda activate hw_senegal
-    TBE_AOI=<nom_aoi> python3 join_defoliation.py
+    TBE_AOI=<nom_aoi> python3 os1_join_defoliation.py
 """
 
 import geopandas as gpd
@@ -83,7 +83,7 @@ def zonal(gdf_year, year):
     for tag in ("vv_db", "vh_db", "rvi"):
         path = PROC_DIR / f"{tag}_{year}.tif"
         if not path.exists():
-            print(f"  [!] {path.name} manquant - exécuter feature_extraction.py d'abord")
+            print(f"  [!] {path.name} manquant - exécuter os1_feature_extraction.py d'abord")
             return None
         with rasterio.open(path) as src:
             nodata = src.nodata
@@ -119,7 +119,7 @@ def main():
         print(f"  {year}: {len(year_gdf)} polygones TBE + {len(neg)} témoins -> {len(out)} échantillons valides")
 
     if not tables:
-        raise SystemExit("Aucune donnée jointe - vérifier que feature_extraction.py a bien tourné pour ces années.")
+        raise SystemExit("Aucune donnée jointe - vérifier que os1_feature_extraction.py a bien tourné pour ces années.")
 
     full = pd.concat(tables, ignore_index=True)
     out_csv = RESULT_DIR / "sar_defoliation_samples.csv"

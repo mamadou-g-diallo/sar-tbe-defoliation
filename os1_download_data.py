@@ -8,7 +8,7 @@ STAC public Microsoft Planetary Computer (gratuit, sans compte ni jeton).
 
 Utilisation :
     conda activate hw_senegal
-    TBE_AOI=<nom_aoi> python3 download_data.py
+    TBE_AOI=<nom_aoi> python3 os1_download_data.py
 """
 
 from collections import Counter

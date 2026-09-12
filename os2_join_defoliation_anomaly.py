@@ -1,13 +1,13 @@
 """
-Variante de join_defoliation.py utilisant les rasters d'ANOMALIE temporelle
-par pixel (anom_vv_db_<year>.tif, etc., produits par feature_extraction.py)
+Variante de os1_join_defoliation.py utilisant les rasters d'ANOMALIE temporelle
+par pixel (anom_vv_db_<year>.tif, etc., produits par os1_feature_extraction.py)
 plutôt que les valeurs brutes - pour tester si retirer l'effet géométrique
 constant par pixel (angle d'incidence local, orbite fixe) améliore la
 séparation par sévérité observée dans os2_water_cloud_model.py.
 
 Utilisation :
     conda activate hw_senegal
-    TBE_AOI=<nom_aoi> python3 join_defoliation_anomaly.py
+    TBE_AOI=<nom_aoi> python3 os2_join_defoliation_anomaly.py
 """
 
 import geopandas as gpd
@@ -16,7 +16,7 @@ import rasterio
 from rasterstats import zonal_stats
 
 from config import YEARS, PROC_DIR, RESULT_DIR
-from join_defoliation import load_tbe_polygons, negative_samples
+from os1_join_defoliation import load_tbe_polygons, negative_samples
 
 
 def zonal_anomaly(gdf_year, year):
@@ -24,7 +24,7 @@ def zonal_anomaly(gdf_year, year):
     for tag in ("vv_db", "vh_db", "rvi"):
         path = PROC_DIR / f"anom_{tag}_{year}.tif"
         if not path.exists():
-            print(f"  [!] {path.name} manquant - exécuter feature_extraction.py d'abord")
+            print(f"  [!] {path.name} manquant - exécuter os1_feature_extraction.py d'abord")
             return None
         with rasterio.open(path) as src:
             nodata = src.nodata

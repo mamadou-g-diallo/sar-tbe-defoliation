@@ -5,7 +5,7 @@ Zone d'étude sélectionnée par la variable d'environnement TBE_AOI (nom d'un
 fichier .shp dans data/shp/, sans l'extension), sur le même principe que les
 projets sentinel2_kolda / dakar_flood_pikine :
 
-    TBE_AOI=matane python3 download_data.py
+    TBE_AOI=matane python3 os1_download_data.py
 
 Chaque AOI a son propre sous-dossier de données (data/<aoi>/...).
 """

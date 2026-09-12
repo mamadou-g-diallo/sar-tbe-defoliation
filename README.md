@@ -13,6 +13,7 @@ A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to
 ## Table of contents
 
 - [Motivation](#motivation)
+- [Study area](#study-area)
 - [Key result](#key-result)
 - [Architecture](#architecture)
 - [Data sources](#data-sources)
@@ -46,6 +47,21 @@ hydraulics) planned as the next phase of this research?
 The entire pipeline runs on **open data only** — no proprietary imagery, no paid API, no local
 processing software beyond a standard Python geospatial stack.
 
+## Study area
+
+Before any statistic, what does the actual damage look like on the ground? [`os1_severity_map.py`](os1_severity_map.py)
+overlays the 2025 TBE severity polygons on the Sentinel-1 VV composite for the same year:
+
+<p align="center">
+  <img src="data/saguenay_lsj/results/severity_map_2025.png" width="620">
+</p>
+
+The diagonal grayscale band is the actual Sentinel-1 swath on the retained orbit — visual confirmation
+of the ~43–46% partial coverage noted in [Limitations](#limitations); outside it (black) there is no
+SAR observation at all for this AOI/orbit. The TBE polygons themselves extend beyond the cyan AOI
+boundary (bbox-intersecting polygons are kept in full, not clipped), giving a sense of how the
+epidemic's real footprint compares to the small window this repo analyzes.
+
 ## Key result
 
 Across 5 summers (2017, 2019, 2021, 2023, 2025) and 1,329 zonal samples in the Saguenay–Lac-Saint-Jean
@@ -77,10 +93,10 @@ flowchart TD
     end
 
     subgraph Pipeline["Pipeline (this repo)"]
-        A["download_data.py<br/><i>same relative orbit across years,<br/>median summer composite</i>"]
-        B["feature_extraction.py<br/><i>VV/VH → dB, RVI</i>"]
-        C["join_defoliation.py<br/><i>zonal stats on TBE polygons<br/>+ negative sampling</i>"]
-        D["exploratory_analysis.py<br/><i>Random Forest, 5-fold CV, SHAP</i>"]
+        A["os1_download_data.py<br/><i>same relative orbit across years,<br/>median summer composite</i>"]
+        B["os1_feature_extraction.py<br/><i>VV/VH → dB, RVI</i>"]
+        C["os1_join_defoliation.py<br/><i>zonal stats on TBE polygons<br/>+ negative sampling</i>"]
+        D["os1_exploratory_analysis.py<br/><i>Random Forest, 5-fold CV, SHAP</i>"]
     end
 
     subgraph Outputs["Outputs"]
@@ -123,7 +139,7 @@ diversity of the four, in a documented epicenter of the current epidemic.
 
 **2. Same-orbit compositing.** SAR backscatter depends on incidence angle, which varies by satellite
 track. Comparing years acquired on *different* relative orbits would confound canopy change with
-viewing-geometry change. `download_data.py` therefore identifies the relative orbit with the best
+viewing-geometry change. `os1_download_data.py` therefore identifies the relative orbit with the best
 multi-year coverage over the AOI and uses it for every year; within each year's 15 Jul–31 Aug window,
 the 2–4 available scenes are combined with a **per-pixel median** (temporal despeckling).
 
@@ -151,10 +167,11 @@ which descriptors — and which moments (mean vs. intra-polygon variability) —
 ```
 .
 ├── config.py                # AOI, years, season window, STAC endpoint, field names
-├── download_data.py         # Sentinel-1 RTC acquisition (same-orbit, median composite)
-├── feature_extraction.py    # VV_dB, VH_dB, RVI rasters
-├── join_defoliation.py      # zonal stats × TBE polygons + negative sampling → CSV
-├── exploratory_analysis.py  # Random Forest + SHAP, figures
+├── os1_download_data.py         # Sentinel-1 RTC acquisition (same-orbit, median composite)
+├── os1_feature_extraction.py    # VV_dB, VH_dB, RVI rasters
+├── os1_join_defoliation.py      # zonal stats × TBE polygons + negative sampling → CSV
+├── os1_exploratory_analysis.py  # Random Forest + SHAP, figures
+├── os1_severity_map.py            # OS1: TBE severity polygons over the Sentinel-1 composite
 ├── os2_water_cloud_model.py       # OS2: single-angle Water Cloud Model calibration
 ├── os2_anomaly_correction.py      # OS2: per-pixel temporal-anomaly correction test
 ├── os2_texture_glcm.py            # OS2: GLCM texture descriptors
@@ -167,8 +184,8 @@ which descriptors — and which moments (mean vs. intra-polygon variability) —
 │   ├── shp/                 # AOI definition (saguenay_lsj.shp) — versioned, ~20 KB
 │   ├── tbe_raw/              # MRNF archive — gitignored, download separately (see below)
 │   └── saguenay_lsj/
-│       ├── raw/              # Sentinel-1 GeoTIFFs — gitignored, regenerate via download_data.py
-│       ├── processed/        # VV_dB/VH_dB/RVI rasters — gitignored, regenerate via feature_extraction.py
+│       ├── raw/              # Sentinel-1 GeoTIFFs — gitignored, regenerate via os1_download_data.py
+│       ├── processed/        # VV_dB/VH_dB/RVI rasters — gitignored, regenerate via os1_feature_extraction.py
 │       └── results/          # sar_defoliation_samples.csv + figures — versioned
 └── README.md
 ```
@@ -182,13 +199,13 @@ pip install -r requirements.txt
 
 export TBE_AOI=saguenay_lsj
 
-python3 download_data.py        # Sentinel-1 RTC → data/<aoi>/raw/
-python3 feature_extraction.py   # VV_dB, VH_dB, RVI → data/<aoi>/processed/
+python3 os1_download_data.py        # Sentinel-1 RTC → data/<aoi>/raw/
+python3 os1_feature_extraction.py   # VV_dB, VH_dB, RVI → data/<aoi>/processed/
 
 # Download the MRNF archive manually (too large to version — see Data sources above),
 # extract it under data/tbe_raw/, then:
-python3 join_defoliation.py     # → data/<aoi>/results/sar_defoliation_samples.csv
-python3 exploratory_analysis.py # → figures in data/<aoi>/results/
+python3 os1_join_defoliation.py     # → data/<aoi>/results/sar_defoliation_samples.csv
+python3 os1_exploratory_analysis.py # → figures in data/<aoi>/results/
 ```
 
 To run this on a different region: drop a new AOI polygon shapefile in `data/shp/`, set
@@ -238,7 +255,7 @@ incidence angle, general moisture, calibration) that dominates each raw band on 
 **Follow-up test.** Planetary Computer's `sentinel-1-rtc` collection ships no incidence-angle asset
 (confirmed directly on the STAC item — only `vv`, `vh`, `tilejson`, `preview`). But since every year is
 acquired on the same fixed relative orbit, incidence angle and static terrain effects are **constant
-over time for a given pixel** — so [`feature_extraction.py`](feature_extraction.py) computes a
+over time for a given pixel** — so [`os1_feature_extraction.py`](os1_feature_extraction.py) computes a
 **per-pixel temporal anomaly** (this year's value minus that pixel's own 5-year mean) as a
 geometry-correction proxy that doesn't require the missing band, and
 [`os2_anomaly_correction.py`](os2_anomaly_correction.py) re-runs the diagnostic on it:
