@@ -62,6 +62,13 @@ SAR observation at all for this AOI/orbit. The TBE polygons themselves extend be
 boundary (bbox-intersecting polygons are kept in full, not clipped), giving a sense of how the
 epidemic's real footprint compares to the small window this repo analyzes.
 
+[`os1_sar_variables_map.py`](os1_sar_variables_map.py) shows the three raw descriptors side by side
+instead of just their zonal statistics:
+
+<p align="center">
+  <img src="data/saguenay_lsj/results/sar_variables_map_2025.png" width="680">
+</p>
+
 ## Key result
 
 Across 5 summers (2017, 2019, 2021, 2023, 2025) and 1,329 zonal samples in the Saguenay–Lac-Saint-Jean
@@ -172,6 +179,8 @@ which descriptors — and which moments (mean vs. intra-polygon variability) —
 ├── os1_join_defoliation.py      # zonal stats × TBE polygons + negative sampling → CSV
 ├── os1_exploratory_analysis.py  # Random Forest + SHAP, figures
 ├── os1_severity_map.py            # OS1: TBE severity polygons over the Sentinel-1 composite
+├── os1_sar_variables_map.py       # OS1: VV/VH/RVI side-by-side maps
+├── os3_dendro_sites_map.py        # OS3: ITRDB site locations vs. the AOI
 ├── os2_water_cloud_model.py       # OS2: single-angle Water Cloud Model calibration
 ├── os2_anomaly_correction.py      # OS2: per-pixel temporal-anomaly correction test
 ├── os2_texture_glcm.py            # OS2: GLCM texture descriptors
@@ -385,7 +394,12 @@ the training set.
 [`os3_dendro_check.py`](os3_dendro_check.py) pulls the three nearest published tree-ring chronologies
 (NOAA/[ITRDB](https://www.ncei.noaa.gov/products/paleoclimatology/tree-ring), Krause & Morin) to the
 AOI — one (Lac Onatchiway, black spruce) falls *inside* the Sentinel-1 bounding box; the other two
-(Mont Valin, Lac Liberal — balsam fir, TBE's primary host) are within the same region.
+(Mont Valin, Lac Liberal — balsam fir, TBE's primary host) are within the same region —
+[`os3_dendro_sites_map.py`](os3_dendro_sites_map.py) plots exactly where:
+
+<p align="center">
+  <img src="data/saguenay_lsj/dendro_sites_map.png" width="560">
+</p>
 
 **The hard limit, stated plainly**: all three end in **1993–1995**, roughly two decades before Sentinel-1
 existed (2014+). Open dendro data cannot directly validate the SAR-derived index from this repo — that
