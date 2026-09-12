@@ -24,6 +24,7 @@ A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to
 - [OS4 preview — a pre-trained SAR foundation model](#os4-preview--a-pre-trained-sar-foundation-model-changes-the-picture)
 - [OS3 — dendrochronology](#os3--dendrochronology-what-open-data-can-and-cant-do)
 - [Limitations](#limitations)
+- [Illustrative aside — PINNs](#illustrative-aside--physics-informed-neural-networks-synthetic-data-not-an-aoi-result)
 - [Roadmap](#roadmap)
 - [License & data attribution](#license--data-attribution)
 - [Author](#author)
@@ -424,6 +425,39 @@ This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
   size (59.9%, worse than the frozen probe) — more labeled data would likely be needed before
   fine-tuning pays off. Next: test transferability across regions/years, and package an operational
   severity index for forest harvest planning.
+
+## Illustrative aside — physics-informed neural networks (synthetic data, not an AOI result)
+
+The OS2 roadmap item (couple a Water Cloud Model to field-measured tree hydraulics) is a natural fit
+for a **physics-informed neural network** (PINN): an encoder that inverts tree water potential (Psi)
+from SAR backscatter, regularized by a differentiable physics decoder rather than relying solely on
+scarce field labels. But testing one on the real AOI right now would show nothing — the WCM test above
+already established that the physics itself carries ~zero signal in *this* open dataset, because the
+real state variables (measured canopy water content, local incidence angle) aren't available. A PINN
+cannot inject physical information that isn't in the data.
+
+[`os2_pinn_illustration.py`](os2_pinn_illustration.py) instead demonstrates *what the approach would
+buy once real field hydraulics exist*, on synthetic data with literature-typical (not calibrated, not
+real) parameters: 500 synthetic samples run through Psi → canopy moisture (logistic pressure-volume
+curve) → the same Water Cloud Model equations → noisy SAR backscatter, of which only **15** carry a
+"known" Psi label — a realistic size for a first field campaign.
+
+<p align="center">
+  <img src="data/os2_pinn_illustration.png" width="640">
+</p>
+
+| | RMSE on Psi (MPa), same 15 labels |
+|---|---|
+| Supervised regression alone | 0.922 |
+| PINN (+ physics-consistency loss on all 500 unlabeled samples) | **0.539** |
+
+The physics-consistency term — computable on *all* samples without knowing their Psi, since it only
+checks that predicted Psi reconstructs the observed backscatter through the known equations — cuts
+error by ~40% from the same 15 labels. It's not a clean inversion (the scatter is still wide, and the
+toy pressure-volume curve saturates at both ends, which is a genuine identifiability limit of this kind
+of inverse problem, not an artifact of the neural network): the honest takeaway is that physics
+regularization helps when labels are scarce, not that it solves the inversion outright. This is a
+worked illustration for the thesis proposal, not a finding about the Saguenay–Lac-Saint-Jean forest.
 
 ## License & data attribution
 
