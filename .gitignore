@@ -16,6 +16,7 @@ __pycache__/
 # Docs de travail (PDF/DOCX générés localement pour la candidature, hors dépôt)
 *.docx
 *.pdf
+*.tex
 .~lock.*#
 
 .DS_Store

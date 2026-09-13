@@ -444,7 +444,10 @@ This is OS1 (Objectif Spécifique 1) of a four-part doctoral research plan:
   matched amplitude-vs-texture-vs-combined comparison. None of amplitude, texture, or their combination
   clears ~40% accuracy on open data alone — the ceiling isn't a missing descriptor, it's the missing
   physical/field layer. Next: couple a Water Cloud Model to field-measured tree water potential/sap
-  flow via a dielectric mixing model, and add InSAR coherence once SLC pairs are worth acquiring.
+  flow via a dielectric mixing model, and add InSAR coherence once SLC pairs are worth acquiring — the
+  SNAP GPT chain to compute it is ready ([`insar_coherence_snap/`](insar_coherence_snap/), adapted from
+  the pipeline used operationally for post-earthquake coherence mapping); acquiring authenticated SLC
+  data for this AOI is the remaining blocker, not the processing method.
 - **OS3** — a first check (this repo) against the 3 nearest open ITRDB chronologies confirms they
   capture a real, host-specific 1978 growth crash synchronized across independent sites, but all three
   end in 1993–1995 — decades before Sentinel-1 exists. Cross-validating the SAR-derived stress index
