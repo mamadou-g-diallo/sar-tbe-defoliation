@@ -13,6 +13,12 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
+# Notebooks tutoriel PyGMTSAR (matériel d'apprentissage personnel, pas notre
+# code : bio/promo de l'auteur non retirée, chemins d'une autre machine,
+# cellules en erreur — pas la chaîne SNAP documentée dans ce dossier) — jamais
+# versionnés, même si un `git add .` les recroise un jour.
+insar_coherence_snap/*.ipynb
+
 # Docs de travail (PDF/DOCX générés localement pour la candidature, hors dépôt)
 *.docx
 *.pdf
