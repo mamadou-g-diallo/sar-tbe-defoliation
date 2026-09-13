@@ -96,14 +96,14 @@ spatial confound rather than a purely temporal defoliation response — see
 flowchart TD
     subgraph Sources["External data sources (open, no account needed)"]
         S1[("Sentinel-1 RTC<br/>Microsoft Planetary Computer STAC")]
-        TBE[("MRNF spruce budworm<br/>defoliation polygons<br/>(Données Québec, CC-BY 4.0)")]
+        TBE[("MRNF spruce budworm defoliation polygons<br/>Donnees Quebec, CC-BY 4.0")]
     end
 
     subgraph Pipeline["Pipeline (this repo)"]
-        A["os1_download_data.py<br/><i>same relative orbit across years,<br/>median summer composite</i>"]
-        B["os1_feature_extraction.py<br/><i>VV/VH → dB, RVI</i>"]
-        C["os1_join_defoliation.py<br/><i>zonal stats on TBE polygons<br/>+ negative sampling</i>"]
-        D["os1_exploratory_analysis.py<br/><i>Random Forest, 5-fold CV, SHAP</i>"]
+        A["os1_download_data.py<br/>same relative orbit across years<br/>median summer composite"]
+        B["os1_feature_extraction.py<br/>VV/VH to dB, RVI"]
+        C["os1_join_defoliation.py<br/>zonal stats on TBE polygons<br/>plus negative sampling"]
+        D["os1_exploratory_analysis.py<br/>Random Forest, 5-fold CV, SHAP"]
     end
 
     subgraph Outputs["Outputs"]
@@ -117,9 +117,12 @@ flowchart TD
     C --> R1 --> D --> R2
     D --> R3
 
-    style Sources fill:#eef2f7,stroke:#5b7ba8
-    style Pipeline fill:#fef8ec,stroke:#c99a3a
-    style Outputs fill:#eef7ee,stroke:#4c8f52
+    classDef sourceStyle fill:#eef2f7,stroke:#5b7ba8
+    classDef pipelineStyle fill:#fef8ec,stroke:#c99a3a
+    classDef outputStyle fill:#eef7ee,stroke:#4c8f52
+    class S1,TBE sourceStyle
+    class A,B,C,D pipelineStyle
+    class R1,R2,R3 outputStyle
 ```
 
 Every stage is a standalone script driven by `config.py`, which centralizes the study area, the year
