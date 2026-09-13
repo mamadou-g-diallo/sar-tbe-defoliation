@@ -37,6 +37,16 @@ Read (x2, master+esclave)
   -> Write (GeoTIFF)
 ```
 
+<p align="center">
+  <img src="schema_InSAR.png" width="900" alt="Chaîne de traitement InSAR — graphes SNAP GPT et résumé du pipeline">
+</p>
+
+Les blocs 1 à 3 du schéma correspondent à la chaîne ci-dessus (découpée par étape
+logique : split/orbite, coregistrement/interférogramme, filtrage de phase). Le
+bloc 4 (déroulement de phase, SNAPHU → déplacement → géocodage) est
+**l'extension prévue et non encore implémentée** décrite dans la limite
+ci-dessous — il ne fait pas partie de `run_coherence_batch.py` aujourd'hui.
+
 ## Limite méthodologique assumée
 
 Le graphe calcule une cohérence **sans retrait de la rampe de phase**
@@ -97,3 +107,5 @@ plage avant de la réutiliser en lot.
   `InputFile1`, `InputFile2`, `OutputFile`, `BurstFirst`, `BurstLast`)
 - [`run_coherence_batch.py`](run_coherence_batch.py) — script de lancement en
   lot sur une série temporelle SLC
+- [`schema_InSAR.png`](schema_InSAR.png) — schéma du pipeline (graphes GPT +
+  résumé), blocs 1-3 implémentés ici, bloc 4 (déroulement de phase) à venir
