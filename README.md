@@ -117,9 +117,9 @@ flowchart TD
     C --> R1 --> D --> R2
     D --> R3
 
-    classDef sourceStyle fill:#eef2f7,stroke:#5b7ba8
-    classDef pipelineStyle fill:#fef8ec,stroke:#c99a3a
-    classDef outputStyle fill:#eef7ee,stroke:#4c8f52
+    classDef sourceStyle fill:#dbe9f7,stroke:#3a6ea5,stroke-width:1.5px,color:#000
+    classDef pipelineStyle fill:#fdf0d5,stroke:#b8860b,stroke-width:1.5px,color:#000
+    classDef outputStyle fill:#dff2df,stroke:#3c8c3c,stroke-width:1.5px,color:#000
     class S1,TBE sourceStyle
     class A,B,C,D pipelineStyle
     class R1,R2,R3 outputStyle
