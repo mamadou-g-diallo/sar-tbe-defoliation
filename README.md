@@ -1,5 +1,9 @@
 # SAR-TBE-Defoliation
 
+<p align="center">
+  <img src="cover.png" width="100%" alt="SAR-TBE-Defoliation — real Sentinel-1 RTC over Saguenay–Lac-Saint-Jean">
+</p>
+
 **Does Sentinel-1 radar backscatter carry a usable signal of spruce budworm defoliation severity in the Canadian boreal forest?**
 
 A reproducible, open-data-only pipeline that links Sentinel-1 SAR time series to the Quebec government's own aerial-survey defoliation maps, built as a proof-of-concept for a PhD research objective on SAR-based forest health monitoring.
