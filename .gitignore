@@ -26,3 +26,6 @@ insar_coherence_snap/*.ipynb
 .~lock.*#
 
 .DS_Store
+
+# Image de couverture (retirée du README — gardée en local si besoin plus tard)
+cover.png
