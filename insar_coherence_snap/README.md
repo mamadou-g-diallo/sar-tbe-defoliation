@@ -92,6 +92,31 @@ Pour vérifier les paires et commandes générées sans exécuter SNAP :
 python3 run_coherence_batch.py --input-dir ... --output-dir ... --dry-run
 ```
 
+### Variante double polarisation (VV + VH)
+
+[`coherence_graph_vv_vh.xml`](coherence_graph_vv_vh.xml) +
+[`run_coherence_batch_vv_vh.py`](run_coherence_batch_vv_vh.py) calculent la
+cohérence VV **et** VH en une seule passe (`selectedPolarisations=VV,VH` sur
+les nœuds `Split`/`Deburst`/`Merge` — pas besoin de dupliquer la
+coregistration, qui ne dépend pas de la polarisation) :
+
+```bash
+python3 run_coherence_batch_vv_vh.py \
+    --input-dir /chemin/vers/SLC/ \
+    --output-dir /chemin/vers/sortie/ \
+    --burst-first 1 --burst-last 9
+```
+
+Sortie par paire : `Coherence_VV_VH_{d1}_{d2}.tif` (2 bandes : VV puis VH) et
+`Coherence_ratio_VHVV_{d1}_{d2}.tif` (ratio VH/VV, calculé en Python via
+rasterio — même logique que le RVI du pipeline principal, qui n'est pas non
+plus calculé dans SNAP). Motivation : VH est plus sensible à la diffusion de
+volume (houppier) que VV, donc potentiellement plus diagnostique d'une
+défoliation — cf. discussion dans le README principal. Dépendance
+supplémentaire par rapport au script VV seul : `rasterio` (déjà utilisé par
+le pipeline principal). Ajouter `--no-ratio` pour ne garder que la sortie
+SNAP brute.
+
 ### Trouver la plage de bursts (`--burst-first`/`--burst-last`)
 
 Dépend de l'AOI et doit être redéterminée pour chaque nouvelle zone d'étude :
@@ -103,9 +128,14 @@ plage avant de la réutiliser en lot.
 
 ## Fichiers
 
-- [`coherence_graph.xml`](coherence_graph.xml) — graphe SNAP GPT (paramètres :
-  `InputFile1`, `InputFile2`, `OutputFile`, `BurstFirst`, `BurstLast`)
+- [`coherence_graph.xml`](coherence_graph.xml) — graphe SNAP GPT, VV seule
+  (paramètres : `InputFile1`, `InputFile2`, `OutputFile`, `BurstFirst`,
+  `BurstLast`)
 - [`run_coherence_batch.py`](run_coherence_batch.py) — script de lancement en
-  lot sur une série temporelle SLC
+  lot sur une série temporelle SLC (VV seule)
+- [`coherence_graph_vv_vh.xml`](coherence_graph_vv_vh.xml) — variante double
+  polarisation VV+VH (mêmes paramètres)
+- [`run_coherence_batch_vv_vh.py`](run_coherence_batch_vv_vh.py) — script de
+  lancement correspondant, avec calcul du ratio VH/VV en post-traitement
 - [`schema_InSAR.png`](schema_InSAR.png) — schéma du pipeline (graphes GPT +
   résumé), blocs 1-3 implémentés ici, bloc 4 (déroulement de phase) à venir
