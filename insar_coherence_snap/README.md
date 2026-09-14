@@ -45,7 +45,7 @@ Les blocs 1 à 3 du schéma correspondent à la chaîne ci-dessus (découpée pa
 logique : split/orbite, coregistrement/interférogramme, filtrage de phase). Le
 bloc 4 (déroulement de phase, SNAPHU → déplacement → géocodage) est
 **l'extension prévue et non encore implémentée** décrite dans la limite
-ci-dessous — il ne fait pas partie de `run_coherence_batch.py` aujourd'hui.
+ci-dessous — il ne fait pas partie de `run_coherence_batch_vv.py` aujourd'hui.
 
 ## Limite méthodologique assumée
 
@@ -76,7 +76,7 @@ légèrement sous-estimée dans les zones à fort relief ou grande ligne de base
 ## Utilisation
 
 ```bash
-python3 run_coherence_batch.py \
+python3 run_coherence_batch_vv.py \
     --input-dir /chemin/vers/SLC/ \
     --output-dir /chemin/vers/sortie/ \
     --burst-first 1 --burst-last 9
@@ -89,7 +89,7 @@ sortie déjà présent) est sautée.
 
 Pour vérifier les paires et commandes générées sans exécuter SNAP :
 ```bash
-python3 run_coherence_batch.py --input-dir ... --output-dir ... --dry-run
+python3 run_coherence_batch_vv.py --input-dir ... --output-dir ... --dry-run
 ```
 
 ### Variante double polarisation (VV + VH)
@@ -128,10 +128,10 @@ plage avant de la réutiliser en lot.
 
 ## Fichiers
 
-- [`coherence_graph.xml`](coherence_graph.xml) — graphe SNAP GPT, VV seule
+- [`coherence_graph_vv.xml`](coherence_graph_vv.xml) — graphe SNAP GPT, VV seule
   (paramètres : `InputFile1`, `InputFile2`, `OutputFile`, `BurstFirst`,
   `BurstLast`)
-- [`run_coherence_batch.py`](run_coherence_batch.py) — script de lancement en
+- [`run_coherence_batch_vv.py`](run_coherence_batch_vv.py) — script de lancement en
   lot sur une série temporelle SLC (VV seule)
 - [`coherence_graph_vv_vh.xml`](coherence_graph_vv_vh.xml) — variante double
   polarisation VV+VH (mêmes paramètres)

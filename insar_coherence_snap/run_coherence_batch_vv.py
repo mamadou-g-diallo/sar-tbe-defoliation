@@ -21,14 +21,14 @@ Convention de nommage attendue pour les fichiers SLC (standard ESA) :
 La date est extraite par expression régulière (AAAAMMJJ après 'IW_SLC__1S??_').
 
 Utilisation :
-    python3 run_coherence_batch.py \\
+    python3 run_coherence_batch_vv.py \\
         --input-dir /chemin/vers/SLC/ \\
         --output-dir /chemin/vers/sortie/ \\
-        --graph coherence_graph.xml \\
+        --graph coherence_graph_vv.xml \\
         --burst-first 1 --burst-last 9
 
     # Sans exécuter gpt, juste pour vérifier les paires et commandes générées :
-    python3 run_coherence_batch.py --input-dir ... --output-dir ... --dry-run
+    python3 run_coherence_batch_vv.py --input-dir ... --output-dir ... --dry-run
 """
 
 import argparse
@@ -71,8 +71,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--input-dir", required=True, help="Dossier contenant les produits SLC (.zip/.SAFE)")
     parser.add_argument("--output-dir", required=True, help="Dossier de sortie pour les GeoTIFF de cohérence")
-    parser.add_argument("--graph", default=str(Path(__file__).parent / "coherence_graph.xml"),
-                         help="Graphe SNAP GPT à utiliser (défaut : coherence_graph.xml à côté de ce script)")
+    parser.add_argument("--graph", default=str(Path(__file__).parent / "coherence_graph_vv.xml"),
+                         help="Graphe SNAP GPT à utiliser (défaut : coherence_graph_vv.xml à côté de ce script)")
     parser.add_argument("--gpt-path", default=None, help="Chemin vers l'exécutable gpt (défaut : cherché sur le PATH)")
     parser.add_argument("--burst-first", type=int, default=1, help="Premier burst à extraire (dépend de l'AOI)")
     parser.add_argument("--burst-last", type=int, default=9, help="Dernier burst à extraire (dépend de l'AOI)")

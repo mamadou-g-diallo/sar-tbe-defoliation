@@ -3,7 +3,7 @@ Calcul par lots de la cohérence interférométrique Sentinel-1 (SNAP GPT), en
 double polarisation VV + VH, sur des paires consécutives d'une série
 temporelle SLC triée par date.
 
-Variante de run_coherence_batch.py (VV seule) - voir ce fichier pour la
+Variante de run_coherence_batch_vv.py (VV seule) - voir ce fichier pour la
 version d'origine. Différences :
   - utilise coherence_graph_vv_vh.xml (sortie 2 bandes : cohérence VV, VH) ;
   - calcule en plus, en post-traitement Python (rasterio), le ratio VH/VV -

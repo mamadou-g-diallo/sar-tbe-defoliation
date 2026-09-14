@@ -3,11 +3,11 @@
     Chaîne de calcul de cohérence interférométrique Sentinel-1 TOPS (SNAP GPT),
     variante double polarisation VV + VH.
 
-    Dérivé de coherence_graph.xml (VV seule) - voir ce fichier pour la version
+    Dérivé de coherence_graph_vv.xml (VV seule) - voir ce fichier pour la version
     d'origine (utilisée opérationnellement à l'UM6P pour le séisme d'Al Haouz)
     et README.md pour le contexte complet.
 
-    Différence avec coherence_graph.xml : selectedPolarisations passe de "VV"
+    Différence avec coherence_graph_vv.xml : selectedPolarisations passe de "VV"
     à "VV,VH" sur TOPSAR-Split/Deburst/Merge. Back-Geocoding et Coherence ne
     changent pas - la coregistration ne dépend pas de la polarisation, et
     Coherence calcule une bande de cohérence par polarisation présente en
@@ -28,10 +28,10 @@
              -> TOPSAR-Deburst -> TOPSAR-Merge -> Terrain-Correction -> Write
 
     Paramètres en ligne de commande (gpt -P...) : identiques à
-    coherence_graph.xml (InputFile1, InputFile2, OutputFile, BurstFirst,
+    coherence_graph_vv.xml (InputFile1, InputFile2, OutputFile, BurstFirst,
     BurstLast).
 
-    Limite méthodologique assumée : identique à coherence_graph.xml
+    Limite méthodologique assumée : identique à coherence_graph_vv.xml
     (subtractFlatEarthPhase=false, subtractTopographicPhase=false - cohérence
     "brute", pas de déroulement de phase). Cf. README.md pour le détail.
 
